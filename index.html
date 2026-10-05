@@ -9,14 +9,19 @@
   --noir:#0a0908;--ivory:#f2e9d8;--gold:#c9a24b;--gold-soft:#dcc186;
   --gold-dim:#7c6329;--sepia:#b89a6a;--muted:#9a8460;--rose:#d98c86;
   --ease-out:cubic-bezier(0.23,1,0.32,1);
+  /* Acte II — île */
+  --sea:#1f7a74;--sea-deep:#145e59;--sand:#f3e2b6;--sky:#8fd3cf;
+  --leaf:#2f6b4f;--sun:#f6b73c;--coral:#e2683f;--isl-ink:#174340;--isl-brown:#7a5c3a;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--noir);color:var(--ivory);font-family:Georgia,'Times New Roman',serif;overflow:hidden;height:100vh;}
-body::before{content:'';position:fixed;inset:0;z-index:300;pointer-events:none;
+/* grain + vignette (désactivés en mode île) */
+body::before{content:'';position:fixed;inset:0;z-index:300;pointer-events:none;transition:opacity .8s ease;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity:0.05;mix-blend-mode:overlay;}
-body::after{content:'';position:fixed;inset:0;z-index:290;pointer-events:none;
+body::after{content:'';position:fixed;inset:0;z-index:290;pointer-events:none;transition:opacity .8s ease;
   background:radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(0,0,0,0.6) 100%);animation:flicker 5s infinite steps(1);}
+body.bright::before,body.bright::after{opacity:0;}
 @keyframes flicker{0%,100%{opacity:.9}3%{opacity:.82}6%{opacity:.94}40%{opacity:.88}42%{opacity:.98}70%{opacity:.86}72%{opacity:.95}}
 
 .screen{position:fixed;inset:0;z-index:1;display:none;flex-direction:column;justify-content:center;align-items:center;
@@ -33,33 +38,27 @@ body::after{content:'';position:fixed;inset:0;z-index:290;pointer-events:none;
 .leader-sweep{position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(from -90deg, rgba(201,162,75,.22) 0turn, transparent 0turn);}
 .leader-num{font-size:min(26vw,20vh,150px);font-weight:900;color:var(--ivory);text-shadow:0 0 30px rgba(201,162,75,.4);position:relative;z-index:2;}
 
-/* 2. CARTON-TITRE (page d'accueil) */
+/* 2. CARTON-TITRE */
 .deco-frame{position:relative;max-width:640px;width:100%;padding:clamp(44px,7vh,68px) clamp(24px,5vw,52px);
   border:1px solid var(--gold-dim);outline:1px solid var(--gold-dim);outline-offset:8px;}
 .deco-frame::before,.deco-frame::after{content:'❦';position:absolute;left:50%;transform:translateX(-50%);color:var(--gold);font-size:22px;background:var(--noir);padding:0 16px;}
 .deco-frame::before{top:-12px;} .deco-frame::after{bottom:-12px;transform:translateX(-50%) rotate(180deg);}
-.overline{font-size:clamp(10px,1.6vw,12px);letter-spacing:5px;text-transform:uppercase;color:var(--gold);
-  opacity:0;transform:translateY(-8px);animation:fadeUp .9s var(--ease-out) .3s forwards;}
+.overline{font-size:clamp(10px,1.6vw,12px);letter-spacing:5px;text-transform:uppercase;color:var(--gold);opacity:0;transform:translateY(-8px);animation:fadeUp .9s var(--ease-out) .3s forwards;}
 .names{display:flex;flex-direction:column;align-items:center;gap:0;margin:clamp(18px,3vh,26px) 0;}
-.name{font-size:clamp(42px,11vw,82px);line-height:.98;font-weight:900;text-transform:uppercase;letter-spacing:-1.5px;
-  color:var(--ivory);text-shadow:0 0 26px rgba(201,162,75,.28);}
+.name{font-size:clamp(42px,11vw,82px);line-height:.98;font-weight:900;text-transform:uppercase;letter-spacing:-1.5px;color:var(--ivory);text-shadow:0 0 26px rgba(201,162,75,.28);}
 .name.b{opacity:0;transform:translateY(16px);animation:fadeUp 1s var(--ease-out) .55s forwards;}
 .name.t{opacity:0;transform:translateY(16px);animation:fadeUp 1s var(--ease-out) .95s forwards;}
-.amp{font-style:italic;font-size:clamp(32px,7vw,58px);color:var(--gold);line-height:1;margin:clamp(2px,.6vh,6px) 0;
-  opacity:0;transform:scale(.6) rotate(-8deg);animation:ampPop .9s var(--ease-out) .78s forwards;}
+.amp{font-style:italic;font-size:clamp(32px,7vw,58px);color:var(--gold);line-height:1;margin:clamp(2px,.6vh,6px) 0;opacity:0;transform:scale(.6) rotate(-8deg);animation:ampPop .9s var(--ease-out) .78s forwards;}
 @keyframes ampPop{to{opacity:1;transform:scale(1) rotate(0);}}
-.hearts{color:var(--rose);letter-spacing:8px;font-size:clamp(13px,2vw,17px);margin:6px 0 0;
-  opacity:0;animation:fadeUp 1s var(--ease-out) 1.15s forwards;}
+.hearts{color:var(--rose);letter-spacing:8px;font-size:clamp(13px,2vw,17px);margin:6px 0 0;opacity:0;animation:fadeUp 1s var(--ease-out) 1.15s forwards;}
 .hearts .g{color:var(--gold);}
-.title-sub{font-style:italic;font-size:clamp(14px,2.3vw,20px);color:var(--sepia);letter-spacing:.5px;margin-top:clamp(16px,3vh,26px);
-  opacity:0;transform:translateY(12px);animation:fadeUp 1s var(--ease-out) 1.3s forwards;}
-.btn{display:inline-block;cursor:pointer;font-family:Georgia,serif;font-size:clamp(11px,1.6vw,13px);letter-spacing:4px;
-  text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-dim);padding:15px 40px;transition:all .35s var(--ease-out);}
+.title-sub{font-style:italic;font-size:clamp(14px,2.3vw,20px);color:var(--sepia);letter-spacing:.5px;margin-top:clamp(16px,3vh,26px);opacity:0;transform:translateY(12px);animation:fadeUp 1s var(--ease-out) 1.3s forwards;}
+.btn{display:inline-block;cursor:pointer;font-family:Georgia,serif;font-size:clamp(11px,1.6vw,13px);letter-spacing:4px;text-transform:uppercase;color:var(--gold);background:transparent;border:1px solid var(--gold-dim);padding:15px 40px;transition:all .35s var(--ease-out);}
 .btn:hover{background:var(--gold);color:var(--noir);letter-spacing:6px;}
 .btn:active{transform:scale(.97);}
 #startBtn{margin-top:clamp(26px,5vh,40px);opacity:0;transform:translateY(14px);animation:fadeUp 1s var(--ease-out) 1.5s forwards;}
 
-/* 3. QUESTIONS */
+/* 3. QUESTIONS (noir) */
 #game{justify-content:space-between;padding-top:clamp(52px,8vh,84px);padding-bottom:clamp(44px,6vh,68px);}
 .q-stage{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;max-width:900px;}
 .q-block{width:100%;}
@@ -73,79 +72,145 @@ body::after{content:'';position:fixed;inset:0;z-index:290;pointer-events:none;
 .q-block.has-options .q-text{max-width:26ch;font-size:clamp(21px,3.8vw,42px);}
 .q-text em{font-style:italic;color:var(--gold-soft);}
 .options{list-style:none;margin:clamp(20px,3.6vh,36px) auto 0;max-width:540px;width:100%;display:flex;flex-direction:column;gap:clamp(9px,1.4vh,14px);}
-.option{display:flex;align-items:center;gap:16px;text-align:left;padding:clamp(11px,1.7vh,15px) clamp(18px,3vw,26px);
-  border-top:1px solid rgba(124,99,41,.35);border-bottom:1px solid rgba(124,99,41,.35);
-  background:linear-gradient(90deg,rgba(124,99,41,.06),transparent);font-size:clamp(15px,2.1vw,20px);color:var(--ivory);
-  opacity:0;transform:translateY(12px);}
+.option{display:flex;align-items:center;gap:16px;text-align:left;padding:clamp(11px,1.7vh,15px) clamp(18px,3vw,26px);border-top:1px solid rgba(124,99,41,.35);border-bottom:1px solid rgba(124,99,41,.35);background:linear-gradient(90deg,rgba(124,99,41,.06),transparent);font-size:clamp(15px,2.1vw,20px);color:var(--ivory);opacity:0;transform:translateY(12px);}
 .option.show{animation:fadeUp .6s var(--ease-out) forwards;}
 .option .mark{color:var(--gold);font-size:13px;flex-shrink:0;}
 .q-hint{margin-top:clamp(18px,3.4vh,36px);font-style:italic;font-size:clamp(13px,2vw,19px);color:var(--muted);letter-spacing:.5px;}
 .q-hint::before{content:'— '} .q-hint::after{content:' —'}
 
 .q-nav{display:flex;align-items:center;justify-content:center;gap:clamp(18px,4vw,40px);width:100%;}
-.nav-arrow{cursor:pointer;user-select:none;width:46px;height:46px;border:1px solid var(--gold-dim);border-radius:50%;
-  display:flex;justify-content:center;align-items:center;color:var(--gold);font-size:18px;background:rgba(10,9,8,.4);transition:all .3s var(--ease-out);}
+.nav-arrow{cursor:pointer;user-select:none;width:46px;height:46px;border:1px solid var(--gold-dim);border-radius:50%;display:flex;justify-content:center;align-items:center;color:var(--gold);font-size:18px;background:rgba(10,9,8,.4);transition:all .3s var(--ease-out);}
 .nav-arrow:hover{background:var(--gold);color:var(--noir);}
 .nav-arrow.disabled{opacity:.25;pointer-events:none;}
 .nav-counter{font-size:clamp(11px,1.8vw,13px);letter-spacing:3px;text-transform:uppercase;color:var(--sepia);min-width:110px;}
 
-.music-toggle{position:fixed;top:18px;right:20px;z-index:320;cursor:pointer;width:42px;height:42px;border:1px solid var(--gold-dim);border-radius:50%;
-  background:rgba(10,9,8,.6);color:var(--gold);display:flex;justify-content:center;align-items:center;font-size:16px;transition:all .3s var(--ease-out);}
+.music-toggle{position:fixed;top:18px;right:20px;z-index:320;cursor:pointer;width:42px;height:42px;border:1px solid var(--gold-dim);border-radius:50%;background:rgba(10,9,8,.6);color:var(--gold);display:flex;justify-content:center;align-items:center;font-size:16px;transition:all .3s var(--ease-out);}
 .music-toggle:hover{border-color:var(--gold);transform:scale(1.08);}
 .music-toggle.off{color:var(--muted);opacity:.6;}
+body.bright .music-toggle{border-color:rgba(23,67,64,.4);background:rgba(255,255,255,.35);color:var(--isl-ink);}
+
+/* =========================================================
+   ACTE II — ÎLE DÉSERTE (DA soleil / lagon)
+========================================================= */
+#islandScene{position:fixed;inset:0;z-index:0;display:none;overflow:hidden;
+  background:linear-gradient(180deg,#89cfcb 0%,#aee3da 42%,#ecdcae 78%,#e7cf95 100%);}
+body.bright #islandScene{display:block;animation:fadeIn 1s ease both;}
+.isl-sun{position:absolute;top:8%;right:12%;width:clamp(90px,16vw,160px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, #fff2cf 0%, var(--sun) 55%, rgba(246,183,60,0) 72%);
+  box-shadow:0 0 90px 30px rgba(246,183,60,.45);animation:sunPulse 6s ease-in-out infinite;}
+@keyframes sunPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.waves{position:absolute;left:-5%;width:110%;}
+.waves svg{display:block;width:100%;height:auto;}
+.wave1{bottom:16%;opacity:.55;animation:bob 7s ease-in-out infinite;}
+.wave2{bottom:11%;opacity:.8;animation:bob 5.5s ease-in-out infinite reverse;}
+.wave3{bottom:6%;opacity:1;animation:bob 6.3s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.isl-leaf{position:absolute;opacity:.9;filter:drop-shadow(0 6px 10px rgba(0,0,0,.12));}
+.leaf-tl{top:-34px;left:-26px;width:clamp(150px,26vw,300px);transform:rotate(8deg);}
+.leaf-tr{top:-50px;right:-40px;width:clamp(140px,24vw,280px);transform:scaleX(-1) rotate(6deg);}
+
+/* flash de transition */
+#flash{position:fixed;inset:0;z-index:400;background:#fff;opacity:0;pointer-events:none;}
+#flash.go{animation:flash 1s ease forwards;}
+@keyframes flash{0%{opacity:0}18%{opacity:.95}100%{opacity:0}}
+
+/* intro Acte II */
+.i-frame{position:relative;max-width:620px;width:100%;padding:clamp(40px,6vh,60px) clamp(24px,5vw,48px);
+  background:rgba(255,255,255,.30);backdrop-filter:blur(3px);border:1px solid rgba(255,255,255,.55);border-radius:18px;
+  box-shadow:0 20px 60px rgba(20,70,66,.18);}
+.i-overline{font-size:clamp(10px,1.6vw,12px);letter-spacing:6px;text-transform:uppercase;color:var(--sea-deep);opacity:0;animation:fadeUp .9s var(--ease-out) .3s forwards;}
+.i-title{font-size:clamp(40px,9vw,78px);line-height:1;font-weight:900;color:var(--isl-ink);letter-spacing:-1px;margin:10px 0 6px;text-shadow:0 2px 0 rgba(255,255,255,.4);opacity:0;transform:translateY(14px);animation:fadeUp 1s var(--ease-out) .5s forwards;}
+.i-badge{font-size:clamp(26px,5vw,40px);opacity:0;animation:fadeUp .9s var(--ease-out) .2s forwards;}
+.i-story{margin-top:clamp(16px,3vh,24px);font-size:clamp(15px,2.3vw,20px);line-height:1.55;color:var(--isl-ink);opacity:0;transform:translateY(12px);animation:fadeUp 1s var(--ease-out) .75s forwards;}
+.i-btn{display:inline-block;cursor:pointer;font-family:Georgia,serif;font-size:clamp(11px,1.6vw,13px);letter-spacing:3px;text-transform:uppercase;
+  color:#fff;background:var(--coral);border:none;border-radius:40px;padding:15px 40px;margin-top:clamp(24px,4vh,36px);
+  box-shadow:0 10px 24px rgba(226,104,63,.35);transition:all .3s var(--ease-out);opacity:0;transform:translateY(14px);animation:fadeUp 1s var(--ease-out) 1s forwards;}
+.i-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(226,104,63,.45);letter-spacing:5px;}
+.i-btn:active{transform:scale(.97);}
+
+/* questions Acte II */
+#igame{justify-content:space-between;padding-top:clamp(52px,8vh,84px);padding-bottom:clamp(44px,6vh,68px);}
+.i-label{font-size:clamp(10px,1.8vw,12px);letter-spacing:5px;text-transform:uppercase;color:var(--sea-deep);}
+.i-scene{max-width:34ch;margin:clamp(12px,2.4vh,20px) auto 0;font-style:italic;font-size:clamp(14px,2.1vw,19px);line-height:1.5;color:var(--isl-brown);
+  background:rgba(255,255,255,.4);padding:clamp(12px,2vh,16px) clamp(16px,3vw,22px);border-radius:12px;}
+.i-qtext{max-width:22ch;margin:clamp(16px,3vh,26px) auto 0;font-weight:700;color:var(--isl-ink);line-height:1.25;letter-spacing:-.3px;font-size:clamp(23px,4.4vw,46px);}
+.i-qtext em{font-style:normal;color:var(--coral);}
+.i-hint{margin-top:clamp(16px,3vh,28px);font-style:italic;font-size:clamp(13px,2vw,18px);color:var(--sea-deep);}
+.i-hint::before{content:'— '} .i-hint::after{content:' —'}
+.inav-arrow{cursor:pointer;user-select:none;width:46px;height:46px;border:none;border-radius:50%;display:flex;justify-content:center;align-items:center;color:#fff;font-size:18px;background:var(--sea);box-shadow:0 8px 18px rgba(20,70,66,.3);transition:all .3s var(--ease-out);}
+.inav-arrow:hover{background:var(--sea-deep);transform:translateY(-2px);}
+.inav-arrow.disabled{opacity:.3;pointer-events:none;}
+.inav-counter{font-size:clamp(11px,1.8vw,13px);letter-spacing:3px;text-transform:uppercase;color:var(--sea-deep);min-width:120px;}
 </style>
 </head>
 <body>
 
 <div class="music-toggle off" id="musicBtn" title="Musique">♪</div>
+<div id="flash"></div>
+
+<!-- Décor fixe de l'île (Acte II) -->
+<div id="islandScene">
+  <div class="isl-sun"></div>
+  <svg class="isl-leaf leaf-tl" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="#2f6b4f"><path d="M20 20C70 10 150 25 185 70 150 60 95 60 55 80 100 72 150 82 180 110 135 100 80 105 45 130 95 118 150 128 180 150 120 150 55 140 20 150Z"/><path d="M22 22C40 70 45 120 55 150" stroke="#27583f" stroke-width="5"/></g></svg>
+  <svg class="isl-leaf leaf-tr" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg"><g fill="#35775a"><path d="M20 20C70 10 150 25 185 70 150 60 95 60 55 80 100 72 150 82 180 110 135 100 80 105 45 130 95 118 150 128 180 150 120 150 55 140 20 150Z"/><path d="M22 22C40 70 45 120 55 150" stroke="#2b6349" stroke-width="5"/></g></svg>
+  <div class="waves wave1"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 45 C240 85 480 5 720 45 C960 85 1200 5 1440 45 L1440 90 L0 90 Z" fill="#bfe8df"/></svg></div>
+  <div class="waves wave2"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 45 C240 85 480 5 720 45 C960 85 1200 5 1440 45 L1440 90 L0 90 Z" fill="#5fb6ad"/></svg></div>
+  <div class="waves wave3"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0 50 C240 90 480 10 720 50 C960 90 1200 10 1440 50 L1440 90 L0 90 Z" fill="#1f7a74"/></svg></div>
+</div>
 
 <!-- 1. AMORCE -->
 <section class="screen active" id="leader">
   <div class="leader-circle"><div class="leader-sweep" id="sweep"></div><div class="leader-num" id="leaderNum">3</div></div>
 </section>
 
-<!-- 2. PAGE D'ACCUEIL -->
+<!-- 2. ACCUEIL -->
 <section class="screen" id="titlecard">
   <div class="deco-frame">
     <div class="overline">Le grand jeu des mariés</div>
-    <div class="names">
-      <span class="name b">Blandine</span>
-      <span class="amp">&amp;</span>
-      <span class="name t">Thibaud</span>
-    </div>
+    <div class="names"><span class="name b">Blandine</span><span class="amp">&amp;</span><span class="name t">Thibaud</span></div>
     <div class="hearts"><span class="g">❦</span> &nbsp;♥&nbsp; <span class="g">❦</span></div>
-    <p class="title-sub"></p>
+    <p class="title-sub">Deux cœurs, mille questions, une seule soirée</p>
     <button class="btn" id="startBtn">Que le jeu commence</button>
   </div>
 </section>
 
-<!-- 3. QUESTIONS -->
+<!-- 3. QUESTIONS (noir) -->
 <section class="screen" id="game">
   <div class="q-stage"><div class="q-block" id="qBlock"></div></div>
-  <div class="q-nav">
-    <div class="nav-arrow" id="prevBtn">❮</div>
-    <div class="nav-counter" id="counter"></div>
-    <div class="nav-arrow" id="nextBtn">❯</div>
+  <div class="q-nav"><div class="nav-arrow" id="prevBtn">❮</div><div class="nav-counter" id="counter"></div><div class="nav-arrow" id="nextBtn">❯</div></div>
+</section>
+
+<!-- 4. ACTE II — INTRO -->
+<section class="screen" id="iintro">
+  <div class="i-frame">
+    <div class="i-badge">☀️🏝️</div>
+    <div class="i-overline">Acte II</div>
+    <h1 class="i-title">Le Naufrage</h1>
+    <p class="i-story">Vous partez en voyage. Rien ne se passe comme prévu… et vous échouez, sains et saufs, sur une île déserte — plutôt accueillante : 20°C le matin, 30°C l'après-midi, végétation luxuriante. Et vos valises s'échouent juste à côté de vous.</p>
+    <button class="i-btn" id="iStart">Débuter l'aventure</button>
   </div>
+</section>
+
+<!-- 5. ACTE II — QUESTIONS -->
+<section class="screen" id="igame">
+  <div class="q-stage"><div class="q-block" id="iqBlock"></div></div>
+  <div class="q-nav"><div class="inav-arrow" id="iprev">❮</div><div class="inav-counter" id="icounter"></div><div class="inav-arrow" id="inext">❯</div></div>
 </section>
 
 <script>
 /* ============================================================
-   LES 23 QUESTIONS — modifie librement.
-   options : facultatif (réponse à l'oral)
+   ACTE I — questions (DA film noir). Q4 & Q19 d'origine retirées.
 ============================================================ */
 const QUESTIONS = [
   { text:"Qui est le plus <em>psychorigide</em> ?" },
   { text:"Qui a déjà mangé <em>500 g de viande hachée crue</em> sur un coup de tête ?" },
   { text:"Qui est le plus susceptible de se perdre, <em>même avec un GPS</em> ?" },
-  { text:"Si vous partiez demain matin sans connaître la destination, où iriez-vous ?",
-    options:["La mer","Les Alpes","La Savoie","L'Ardèche"] },
   { text:"Un seul plat pour votre prochain dîner en amoureux. Ce sera…",
     options:["Moules-frites","Poisson","Abats","Viande rouge"] },
   { text:"Thibaud prépare le dîner. Sur quoi <em>Blandine</em> parie-t-elle ?",
     options:["Cuisses de canard & pommes de terre sautées","Picard","KFC","Père Dodu"] },
   { text:"Qui serait capable de passer <em>l'année entière en short</em> s'il le pouvait ?" },
-  { text:"Qui juge qu'une <em>doudoune</em> est justifiée dès qu'il fait un peu moins de 20°C ?" },
+  { text:"Qui juge qu'une <em>doudoune</em> est justifiée dès qu'il fait 20°C ?" },
   { text:"Qui a le plus de chances d'oublier la crème solaire et de finir <em>rouge tomate</em> ?" },
   { text:"Une seule émission à regarder, sans négocier. Vous choisissez…",
     options:["Danse avec les stars","The Voice","L'amour est dans le pré","Quotidien"] },
@@ -158,7 +223,6 @@ const QUESTIONS = [
   { text:"Qui dit <em>«&nbsp;on n'en a pas besoin&nbsp;»</em>… avant de l'acheter quand même ?" },
   { text:"Qui décide le plus souvent de ce que vous regardez à la télé ?" },
   { text:"En vacances, qui est plutôt <em>«&nbsp;programme préparé à l'avance&nbsp;»</em> ?" },
-  { text:"Et qui est plutôt <em>«&nbsp;on verra bien une fois sur place&nbsp;»</em> ?" },
   { text:"Qui donne le plus de <em>petits surnoms</em> à l'autre ?" },
   { text:"Un voyage gagné, départ dès demain. Vous choisissez…",
     options:["Soleil, plage & farniente","Montagne et grand air","City-trip à deux","Votre destination de rêve"] },
@@ -166,42 +230,96 @@ const QUESTIONS = [
   { text:"Et pour terminer… lequel avait secrètement le plus <em>hâte que ce jour arrive</em> ?" }
 ];
 
-let current=0;
-function toRoman(n){const m=[["M",1000],["CM",900],["D",500],["CD",400],["C",100],["XC",90],["L",50],["XL",40],["X",10],["IX",9],["V",5],["IV",4],["I",1]];let o='';m.forEach(([s,v])=>{while(n>=v){o+=s;n-=v;}});return o;}
+/* ============================================================
+   ACTE II — scénario de l'île (6 épisodes)
+============================================================ */
+const ISLAND = [
+  { scene:"Vous fouillez vos bagages après le naufrage. Entre les maillots et les lunettes de soleil, vous tombez sur un couteau suisse, une lampe à manivelle, de la ficelle et une trousse de secours.",
+    text:"Lequel/laquelle est assez <em>prévoyant·e</em> pour avoir pensé à tout emporter « parce qu'on ne sait jamais » ?" },
+  { scene:"Vous partez explorer l'île pour trouver de quoi manger et un endroit où dormir.",
+    text:"Qui prend naturellement les commandes et <em>organise l'expédition</em> ?" },
+  { scene:"La nuit tombe. Il faut un feu, un abri, et préparer à manger… d'autant plus si ça court partout.",
+    text:"Lequel/laquelle de vous deux <em>panique en premier</em> ?" },
+  { scene:"Après quelques jours, vous réalisez que vous n'avez aucune idée de la date à laquelle vous serez secourus.",
+    text:"Lequel/laquelle réfléchit en premier à un <em>moyen de quitter l'île</em> ?" },
+  { scene:"Après plusieurs semaines, vous avez votre petite routine : baignade, sieste, noix de coco et coucher de soleil.",
+    text:"Qui finirait par dire : « En fait… <em>on pourrait rester ici pour toujours</em> » ?" },
+  { scene:"Un bateau apparaît enfin au large ! Vous êtes sauvés ! Mais juste avant de monter, on vous laisse le choix : rentrer… ou rester encore un an, tous les deux, sans téléphone ni contraintes.",
+    text:"Qui serait le plus <em>tenté de rester</em> ?" }
+];
 
+function toRoman(n){const m=[["M",1000],["CM",900],["D",500],["CD",400],["C",100],["XC",90],["L",50],["XL",40],["X",10],["IX",9],["V",5],["IV",4],["I",1]];let o='';m.forEach(([s,v])=>{while(n>=v){o+=s;n-=v;}});return o;}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');
+  document.body.classList.toggle('bright', id==='iintro'||id==='igame');}
+
+/* ---------- ACTE I ---------- */
+let current=0;
 function render(i,dir){
   const q=QUESTIONS[i];const block=document.getElementById('qBlock');
   const build=()=>{
     let html=`<div class="q-label">Question ${toRoman(i+1)}</div><div class="q-orn">❦</div><h2 class="q-text">${q.text}</h2>`;
-    if(q.options){
-      html+=`<ul class="options">`+q.options.map((o,k)=>`<li class="option" style="animation-delay:${.35+k*0.1}s"><span class="mark">❖</span><span>${o}</span></li>`).join('')+`</ul><p class="q-hint">à vous de choisir</p>`;
-    } else { html+=`<p class="q-hint">à vous de répondre</p>`; }
-    block.className='q-block entering'+(q.options?' has-options':'');
-    block.innerHTML=html;
+    if(q.options){html+=`<ul class="options">`+q.options.map((o,k)=>`<li class="option" style="animation-delay:${.35+k*0.1}s"><span class="mark">❖</span><span>${o}</span></li>`).join('')+`</ul><p class="q-hint">à vous de choisir</p>`;}
+    else{html+=`<p class="q-hint">à vous de répondre</p>`;}
+    block.className='q-block entering'+(q.options?' has-options':'');block.innerHTML=html;
     requestAnimationFrame(()=>block.querySelectorAll('.option').forEach(o=>o.classList.add('show')));
     document.getElementById('counter').textContent=`${toRoman(i+1)} / ${toRoman(QUESTIONS.length)}`;
     document.getElementById('prevBtn').classList.toggle('disabled',i===0);
-    const next=document.getElementById('nextBtn');
-    next.textContent=i===QUESTIONS.length-1?'✦':'❯';
-    next.title=i===QUESTIONS.length-1?'Fin':'Suivant';
+    const next=document.getElementById('nextBtn');next.textContent=i===QUESTIONS.length-1?'☀':'❯';next.title=i===QUESTIONS.length-1?'Acte II':'Suivant';
   };
   if(dir&&block.innerHTML){block.className='q-block leaving';setTimeout(build,380);}else{build();}
 }
-function go(d){const n=current+d;if(n<0)return;if(n>=QUESTIONS.length){show('titlecard');current=0;return;}current=n;render(current,d>0?'next':'prev');}
+function go(d){const n=current+d;if(n<0)return;
+  if(n>=QUESTIONS.length){goToIsland();return;}
+  current=n;render(current,d>0?'next':'prev');}
+
+/* ---------- Transition vers l'île ---------- */
+function goToIsland(){
+  const f=document.getElementById('flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+  setTimeout(()=>show('iintro'),480);
+}
+
+/* ---------- ACTE II ---------- */
+let icur=0;
+function renderIsland(i,dir){
+  const q=ISLAND[i];const block=document.getElementById('iqBlock');
+  const build=()=>{
+    block.className='q-block entering';
+    block.innerHTML=`<div class="i-label">Naufrage · Épisode ${toRoman(i+1)}</div>
+      <p class="i-scene">${q.scene}</p>
+      <h2 class="i-qtext">${q.text}</h2>
+      <p class="i-hint">à vous de répondre</p>`;
+    document.getElementById('icounter').textContent=`${toRoman(i+1)} / ${toRoman(ISLAND.length)}`;
+    document.getElementById('iprev').classList.toggle('disabled',i===0);
+    const nx=document.getElementById('inext');nx.textContent=i===ISLAND.length-1?'✦':'❯';nx.title=i===ISLAND.length-1?'Fin':'Suivant';
+  };
+  if(dir&&block.innerHTML){block.className='q-block leaving';setTimeout(build,380);}else{build();}
+}
+function igo(d){const n=icur+d;if(n<0)return;
+  if(n>=ISLAND.length){show('titlecard');current=0;icur=0;return;}
+  icur=n;renderIsland(icur,d>0?'next':'prev');}
+
 document.getElementById('nextBtn').addEventListener('click',()=>go(1));
 document.getElementById('prevBtn').addEventListener('click',()=>go(-1));
-document.addEventListener('keydown',e=>{if(!document.getElementById('game').classList.contains('active'))return;
-  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}});
+document.getElementById('inext').addEventListener('click',()=>igo(1));
+document.getElementById('iprev').addEventListener('click',()=>igo(-1));
+document.getElementById('iStart').addEventListener('click',()=>{show('igame');icur=0;renderIsland(0);});
+document.addEventListener('keydown',e=>{
+  const g=document.getElementById('game').classList.contains('active');
+  const ig=document.getElementById('igame').classList.contains('active');
+  if(!g&&!ig)return;
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();g?go(1):igo(1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();g?go(-1):igo(-1);}
+});
 
+/* ---------- Amorce ---------- */
 function runLeader(done){const num=document.getElementById('leaderNum'),sweep=document.getElementById('sweep');let n=3;
   const tick=()=>{num.textContent=n;num.style.animation='none';void num.offsetWidth;num.style.animation='fadeIn .3s var(--ease-out)';
     sweep.style.transition='none';sweep.style.background='conic-gradient(from -90deg, rgba(201,162,75,.22) 0turn, transparent 0turn)';
     void sweep.offsetWidth;sweep.style.transition='background 1s linear';
     sweep.style.background='conic-gradient(from -90deg, rgba(201,162,75,.22) 1turn, transparent 1turn)';
     n--;if(n>=1){setTimeout(tick,1000);}else{setTimeout(done,1000);}};tick();}
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-/* Musique (valse synthétisée, sans fichier externe) */
+/* ---------- Musique (valse synthétisée) ---------- */
 let audioCtx=null,musicOn=false,musicTimer=null,master=null;const btnMusic=document.getElementById('musicBtn');
 const MELODY=[[523.25,.5],[659.25,.5],[783.99,.5],[659.25,.5],[587.33,.75],[783.99,.25],[698.46,.5],[523.25,.5],[493.88,.5],[587.33,.5],[659.25,.75],[523.25,.25],[440,1],[0,.5]];
 function initAudio(){if(audioCtx)return;audioCtx=new(window.AudioContext||window.webkitAudioContext)();master=audioCtx.createGain();master.gain.value=.16;master.connect(audioCtx.destination);}
