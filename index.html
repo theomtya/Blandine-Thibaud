@@ -141,6 +141,26 @@ body.bright #islandScene{display:block;animation:fadeIn 1s ease both;}
 .inav-arrow:hover{background:var(--sea-deep);transform:translateY(-2px);}
 .inav-arrow.disabled{opacity:.3;pointer-events:none;}
 .inav-counter{font-size:clamp(11px,1.8vw,13px);letter-spacing:3px;text-transform:uppercase;color:var(--sea-deep);min-width:120px;}
+
+/* =========================================================
+   ENTRACTE — transition narrative (aube qui se lève)
+========================================================= */
+#interlude{position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#09080a 0%,#140d08 38%,#301d10 64%,#5a3720 82%,#8a5a2e 100%);}
+.dawn{position:absolute;left:50%;bottom:-18vh;transform:translateX(-50%);width:130vw;height:62vh;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 100%, rgba(246,183,60,.55) 0%, rgba(226,104,63,.22) 40%, transparent 70%);
+  animation:dawnRise 2.4s var(--ease-out) both;}
+@keyframes dawnRise{from{opacity:0;transform:translateX(-50%) translateY(46px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.il-wrap{position:relative;z-index:2;max-width:640px;width:100%;}
+.il-overline{font-size:clamp(10px,1.6vw,12px);letter-spacing:7px;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .9s var(--ease-out) .3s forwards;}
+.il-orn{color:var(--gold);letter-spacing:6px;font-size:clamp(16px,2.4vw,22px);margin:clamp(14px,2.6vh,22px) 0;opacity:0;animation:fadeUp .9s var(--ease-out) .5s forwards;}
+.il-text p{font-size:clamp(16px,2.5vw,22px);line-height:1.62;color:var(--ivory);margin:0 auto clamp(14px,2.2vh,20px);max-width:34ch;}
+.il-text p:last-child{margin-bottom:0;}
+.il-text em{font-style:italic;color:var(--gold-soft);}
+.il-text p:nth-child(1){opacity:0;animation:fadeUp 1s var(--ease-out) .7s forwards;}
+.il-text p:nth-child(2){opacity:0;animation:fadeUp 1s var(--ease-out) 1s forwards;}
+.il-text p:nth-child(3){opacity:0;animation:fadeUp 1s var(--ease-out) 1.3s forwards;}
+#ilBtn{margin-top:clamp(26px,5vh,40px);opacity:0;animation:fadeUp 1s var(--ease-out) 1.7s forwards;}
 </style>
 </head>
 <body>
@@ -178,6 +198,21 @@ body.bright #islandScene{display:block;animation:fadeIn 1s ease both;}
 <section class="screen" id="game">
   <div class="q-stage"><div class="q-block" id="qBlock"></div></div>
   <div class="q-nav"><div class="nav-arrow" id="prevBtn">❮</div><div class="nav-counter" id="counter"></div><div class="nav-arrow" id="nextBtn">❯</div></div>
+</section>
+
+<!-- 3b. ENTRACTE -->
+<section class="screen" id="interlude">
+  <div class="dawn"></div>
+  <div class="il-wrap">
+    <div class="il-overline">Entracte</div>
+    <div class="il-orn">❦ ✦ ❦</div>
+    <div class="il-text">
+      <p>On sait désormais qui avait le plus <em>hâte</em> d'arriver jusqu'à ce jour…</p>
+      <p>Mais parce qu'un mariage, c'est aussi être prêt à affronter toutes les aventures à deux — même les plus improbables — imaginons un instant que le voyage prenne une <em>tournure légèrement différente</em>.</p>
+      <p>Bien qu'on ne souhaite évidemment aucun naufrage à nos jeunes mariés, une petite <em>mise en situation</em> s'impose…</p>
+    </div>
+    <button class="btn" id="ilBtn">Imaginons…</button>
+  </div>
 </section>
 
 <!-- 4. ACTE II — INTRO -->
@@ -269,7 +304,7 @@ function render(i,dir){
   if(dir&&block.innerHTML){block.className='q-block leaving';setTimeout(build,380);}else{build();}
 }
 function go(d){const n=current+d;if(n<0)return;
-  if(n>=QUESTIONS.length){goToIsland();return;}
+  if(n>=QUESTIONS.length){show('interlude');return;}
   current=n;render(current,d>0?'next':'prev');}
 
 /* ---------- Transition vers l'île ---------- */
@@ -302,6 +337,7 @@ document.getElementById('nextBtn').addEventListener('click',()=>go(1));
 document.getElementById('prevBtn').addEventListener('click',()=>go(-1));
 document.getElementById('inext').addEventListener('click',()=>igo(1));
 document.getElementById('iprev').addEventListener('click',()=>igo(-1));
+document.getElementById('ilBtn').addEventListener('click',goToIsland);
 document.getElementById('iStart').addEventListener('click',()=>{show('igame');icur=0;renderIsland(0);});
 document.addEventListener('keydown',e=>{
   const g=document.getElementById('game').classList.contains('active');
